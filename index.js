@@ -1,7 +1,11 @@
 const puppeteer = require('puppeteer')
 const glob = require('glob')
+const randomUserAgent = require('random-useragent')
+
 let chromePath = '/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
-const numberOfSpams = 1
+const numberOfSpams = 2
+const useRandomUserAgent = true
+const openNewBrowser = true
 const urlToSpam = 'https://blog.uiza.io/spotify-squad-framework-part-i/'
 let lookFor
 
@@ -20,25 +24,47 @@ if (osvar == 'darwin') {
 // chromePath = files[0] // assuming only fond out...
 
 void (async () => {
-  const browser = await puppeteer.launch({ 
-    headless: false, 
-    executablePath: chromePath 
-  })
-  for (var i = 1; i <= numberOfSpams; i++) {
-    try {
-      var page = await browser.newPage()
-      await page.goto(urlToSpam)
-      await page.evaluate(_ => {
-        window.scrollBy(0, 500)
-        // window.setTimeout(() => {
-        //   if (window.UZ.loaded) {
-        //     window.UZ.Player("iframe-2c08f440-a1d7-4a2b-941f-7fdadd5ac112").play()
-        //   }
-        // }, 2000)
-      })
-      await page.waitFor(2000)
-    } catch (err) {
-      console.log(err)
+  // a browser a page
+  if (openNewBrowser) {
+    for (var i = 1; i <= numberOfSpams; i++) {
+      try {
+        var browser = await puppeteer.launch({ 
+          headless: false, 
+          executablePath: chromePath 
+        })
+        var page = await browser.newPage()
+        if (useRandomUserAgent) {
+          page.setUserAgent(randomUserAgent.getRandom())
+        }
+        await page.goto(urlToSpam)
+        await page.evaluate(_ => {
+          window.scrollBy(0, 500)
+        })
+        await page.waitFor(2000)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  } else {
+    // multiple tabs under the same browser
+    var browser = await puppeteer.launch({ 
+      headless: false, 
+      executablePath: chromePath 
+    })
+    for (var i = 1; i <= numberOfSpams; i++) {
+      try {
+        var page = await browser.newPage()
+        if (useRandomUserAgent) {
+          page.setUserAgent(randomUserAgent.getRandom())
+        }
+        await page.goto(urlToSpam)
+        await page.evaluate(_ => {
+          window.scrollBy(0, 500)
+        })
+        await page.waitFor(2000)
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
   
