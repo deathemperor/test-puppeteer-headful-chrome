@@ -23,7 +23,7 @@ if (osvar == 'darwin') {
 
 // it is required to have Chrome to run
 if (!fs.existsSync(chromePath)) {
-  console.log('\x1b[31m', "Chrome (not Chromium) is required. Please install it here: https://chrome.google.com");
+  console.log('\x1b[31m', "Chrome (not Chromium) is required. Please install it here: https://chrome.google.com", '\x1b[0m' );
   process.exit()
 }
 
