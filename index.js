@@ -15,7 +15,7 @@ var osvar = process.platform
 if (osvar == 'darwin') {
   // lookFor = "**/Chromium" // MacOSX
 } else if(osvar == 'win32'){
-  chromePath = "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
+  chromePath = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe"
 } else {
   console.log("unknown os")
   process.exit()
