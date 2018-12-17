@@ -1,6 +1,7 @@
 const puppeteer = require('puppeteer')
 const glob = require('glob')
 const randomUserAgent = require('random-useragent')
+const fs = require('fs');
 
 let chromePath = '/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
 const numberOfSpams = 2
@@ -17,6 +18,12 @@ if (osvar == 'darwin') {
   chromePath = "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
 } else {
   console.log("unknown os")
+  process.exit()
+}
+
+// it is required to have Chrome to run
+if (!fs.existsSync(chromePath)) {
+  console.log('\x1b[31m', "Chrome (not Chromium) is required. Please install it here: https://chrome.google.com");
   process.exit()
 }
 
